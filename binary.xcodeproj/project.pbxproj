@@ -29,6 +29,7 @@
 		44A0ED90193639D6003D3D39 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		44A0ED92193639D6003D3D39 /* binary.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = binary.1; sourceTree = "<group>"; };
 		44A0ED9919363A83003D3D39 /* b_treeNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = b_treeNode.h; sourceTree = "<group>"; };
+		44A0ED9A19363F20003D3D39 /* tree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				44A0ED90193639D6003D3D39 /* main.cpp */,
+				44A0ED9A19363F20003D3D39 /* tree.h */,
 				44A0ED92193639D6003D3D39 /* binary.1 */,
 				44A0ED9919363A83003D3D39 /* b_treeNode.h */,
 			);

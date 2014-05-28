@@ -7,10 +7,13 @@
 //
 
 #include <iostream>
+#include "tree.h"
+#include "b_treeNode.h"
 using namespace std;
 
 int main() {
 
+    Tree<int> bTree(8);
     return 0;
 }
 
