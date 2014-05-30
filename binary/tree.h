@@ -18,11 +18,13 @@ class Tree {
 public:
     Tree();
     Tree(T n);
+    Tree (T*& link); //pointer to an array
     void add(T n);
     T b_search(T n);
     void pre_order();
     void post_order();
     void in_order();
+    ~Tree();
     
 private:
     /***Helpers***/
@@ -118,7 +120,14 @@ void Tree<T>::in_order(b_treeNode<T>* link) {
         cout << link -> data << ' ';
         in_order(link -> r_link);
     }
-    
+}
+
+template <typename T>
+Tree<T>::~Tree() {
+    delete h_ptr;
+    h_ptr = NULL;
+    delete m_ptr;
+    m_ptr = NULL;
 }
 
 #endif
