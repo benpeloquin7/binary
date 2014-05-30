@@ -9,6 +9,7 @@
 #ifndef binary_tree_h
 #define binary_tree_h
 
+#include <vector>
 #include "b_treeNode.h"
 using std::cout;
 
@@ -18,9 +19,11 @@ class Tree {
 public:
     Tree();
     Tree(T n);
-    Tree (T*& link); //pointer to an array
+    //Tree (T std::vector<T>::iterator); //pointer to an array
     void add(T n);
     T b_search(T n);
+    int getNumElements();
+    void updateVec(T n);
     void pre_order();
     void post_order();
     void in_order();
@@ -35,6 +38,9 @@ private:
     
     b_treeNode<T>* h_ptr;
     b_treeNode<T>* m_ptr;
+    
+    std::vector<T> vec;
+    int numElements;
 };
 
 template <typename T>
@@ -45,16 +51,16 @@ Tree<T>::Tree() {
 
 template <typename T>
 Tree<T>::Tree(T n) {
-    h_ptr = new b_treeNode<T>;
-    h_ptr -> data = n;
-    h_ptr -> r_link = NULL;
-    h_ptr -> l_link = NULL;
+    h_ptr = NULL;
     m_ptr = h_ptr;
+    add(h_ptr, n);
+    ++numElements;
 }
 
 template <typename T>
 void Tree<T>::add(T n) {
     add(h_ptr, n);
+    ++numElements;
 }
 
 template <typename T>
@@ -70,6 +76,17 @@ void Tree<T>::add(b_treeNode<T>*& link, T n) {
         else
             add(link -> r_link, n);
     }
+}
+
+template <typename T>
+int Tree<T>::getNumElements() {
+    return numElements;
+}
+
+template <typename T>
+void Tree<T>::updateVec(T n) {
+    vec.std::push_back(n);
+    std::sort(vec.begin(), vec.end());
 }
 
 template <typename T>
@@ -126,8 +143,6 @@ template <typename T>
 Tree<T>::~Tree() {
     delete h_ptr;
     h_ptr = NULL;
-    delete m_ptr;
-    m_ptr = NULL;
 }
 
 #endif
