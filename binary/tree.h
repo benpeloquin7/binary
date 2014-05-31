@@ -10,6 +10,7 @@
 #define binary_tree_h
 
 #include <vector>
+#include <iterator>
 #include "b_treeNode.h"
 using std::cout;
 
@@ -24,6 +25,7 @@ public:
     T b_search(T n);
     int getNumElements();
     void updateVec(T n);
+    void printVec();
     void pre_order();
     void post_order();
     void in_order();
@@ -70,6 +72,8 @@ void Tree<T>::add(b_treeNode<T>*& link, T n) {
         link -> data = n;
         link -> r_link = NULL;
         link -> l_link = NULL;
+        
+        updateVec(n);
     } else {
         if (link -> data > n)
             add(link -> l_link, n);
@@ -85,8 +89,20 @@ int Tree<T>::getNumElements() {
 
 template <typename T>
 void Tree<T>::updateVec(T n) {
-    vec.std::push_back(n);
+    vec.push_back(n);
     std::sort(vec.begin(), vec.end());
+}
+
+template <typename T>
+void Tree<T>::printVec() {
+
+    typename std::vector<T>::iterator it = vec.begin();
+
+    while (it != vec.end()) {
+        cout << *it << ' ';
+        ++it;
+    }
+
 }
 
 template <typename T>
