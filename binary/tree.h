@@ -20,8 +20,8 @@ class Tree {
 public:
     Tree();
     Tree(T n);
-    //Tree (T std::vector<T>::iterator); //pointer to an array
     void add(T n);
+    void balance();
     T b_search(T n);
     int getNumElements();
     void updateVec(T n);
@@ -33,10 +33,13 @@ public:
     
 private:
     /***Helpers***/
+    void remove(b_treeNode<T>*& link);
     void add(b_treeNode<T>*& link, T n);
     void pre_order(b_treeNode<T>* link);
     void post_order(b_treeNode<T>* link);
     void in_order(b_treeNode<T>* link);
+    b_treeNode<T>* balance(typename std::vector<T>::iterator start,
+                              typename std::vector<T>::iterator end);
     
     b_treeNode<T>* h_ptr;
     b_treeNode<T>* m_ptr;
@@ -80,6 +83,58 @@ void Tree<T>::add(b_treeNode<T>*& link, T n) {
         else
             add(link -> r_link, n);
     }
+}
+
+template <typename T>
+void Tree<T>::balance() {
+    //remove old tree
+    remove(h_ptr);
+    typename std::vector<T>::iterator it = vec.begin();
+    while (it != vec.end()) {
+        ++it;
+    }
+    
+    --it;
+    h_ptr = balance(vec.begin(), it);
+}
+
+template <typename T>
+b_treeNode<T>* Tree<T>::balance(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end) {
+    
+    b_treeNode<T>* newNode = new b_treeNode<T>;
+    
+    if (start == end) {
+        newNode -> data = *start;
+        newNode -> l_link = NULL;
+        newNode -> r_link = NULL;
+        return newNode;
+    } else if (start < end) {
+        typename std::vector<T>::iterator it = start;
+        
+        //find midpoint in vec
+        int size = vec.size();
+        int mid = size / 2;
+        int count = 0;
+        while (count < mid) {
+            ++it;
+            ++count;
+        }
+        
+        //root
+        newNode -> data = *it;
+        
+        //left side of tree
+        --it;
+        newNode -> l_link = balance(start, it);
+        
+        //right side of tree
+        it += 2;
+        newNode -> r_link = balance(it, end);
+    } else
+        return NULL;
+    
+    return newNode;
+    
 }
 
 template <typename T>
@@ -156,9 +211,44 @@ void Tree<T>::in_order(b_treeNode<T>* link) {
 }
 
 template <typename T>
-Tree<T>::~Tree() {
-    delete h_ptr;
-    h_ptr = NULL;
+void Tree<T>::remove(b_treeNode<T>*& link) {
+    b_treeNode<T>* n_link = link;
+    
+    
+    if (link -> l_link == NULL && link -> r_link == NULL) {
+        delete link;
+        link = NULL;
+    } else if (link -> l_link != NULL) {
+        remove(link -> l_link);
+        delete link;
+        link = NULL;
+    } else if (link -> r_link != NULL) {
+        remove(link -> r_link);
+        delete link;
+        link = NULL;
+    } else
+        return;
+        
+        /*
+        
+    if (n_link == NULL) {
+        delete n_link;
+        n_link = NULL;
+    } else {
+        remove(n_link -> r_link);
+        remove(n_link -> l_link);
+        delete n_link;
+        n_link = NULL;
+    }
+         */
+    
 }
+
+
+template <typename T>
+Tree<T>::~Tree() {
+    remove(h_ptr);
+}
+
 
 #endif
