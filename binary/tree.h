@@ -108,28 +108,49 @@ b_treeNode<T>* Tree<T>::balance(typename std::vector<T>::iterator start, typenam
         newNode -> l_link = NULL;
         newNode -> r_link = NULL;
         return newNode;
-    } else if (start < end) {
+    } else if (start != end) {
         typename std::vector<T>::iterator it = start;
         
-        //find midpoint in vec
-        int size = vec.size();
-        int mid = size / 2;
-        int count = 0;
-        while (count < mid) {
-            ++it;
-            ++count;
+        //if there are only two left
+        it += 1;
+        if (it == end) {
+            newNode -> data = *it;
+            --it;
+            newNode -> l_link = new b_treeNode<T>;
+            newNode -> l_link -> data = *it;
+            newNode -> l_link -> l_link = NULL;
+            newNode -> l_link -> r_link = NULL;
+            newNode -> r_link = NULL;
+            return newNode;
+        } else {
+            it = start; //makke sure iterator is set to beginning
+            //find total length of array passed over
+            int count = 0;
+            while (it != end) {
+                ++it;
+                ++count;
+            }
+            //find midpoint in vec
+            int mid = count / 2;
+
+            count = 0; //reset count to 0
+            it = start; //reset iterator
+            while (count != mid) {
+                ++it;
+                ++count;
+            }
+            
+            //root
+            newNode -> data = *it;
+            
+            //left side of tree
+            --it;
+            newNode -> l_link = balance(start, it);
+            
+            //right side of tree
+            it += 2;
+            newNode -> r_link = balance(it, end);
         }
-        
-        //root
-        newNode -> data = *it;
-        
-        //left side of tree
-        --it;
-        newNode -> l_link = balance(start, it);
-        
-        //right side of tree
-        it += 2;
-        newNode -> r_link = balance(it, end);
     } else
         return NULL;
     
@@ -212,9 +233,7 @@ void Tree<T>::in_order(b_treeNode<T>* link) {
 
 template <typename T>
 void Tree<T>::remove(b_treeNode<T>*& link) {
-    b_treeNode<T>* n_link = link;
-    
-    
+
     if (link -> l_link == NULL && link -> r_link == NULL) {
         delete link;
         link = NULL;
@@ -228,19 +247,6 @@ void Tree<T>::remove(b_treeNode<T>*& link) {
         link = NULL;
     } else
         return;
-        
-        /*
-        
-    if (n_link == NULL) {
-        delete n_link;
-        n_link = NULL;
-    } else {
-        remove(n_link -> r_link);
-        remove(n_link -> l_link);
-        delete n_link;
-        n_link = NULL;
-    }
-         */
     
 }
 
