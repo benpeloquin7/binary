@@ -21,14 +21,14 @@ public:
     /***Constructors***/
     Tree();
     Tree(T n);
-    Tree(Tree<T>& r_side); //Copy constructor
+    Tree(Tree<T>& r_side);
     
     /***Tree***/
     void add(T n);
     void balance();
-    T b_search(T n);
-    int getNumElements();
+    bool b_search(T n);
     b_treeNode<T>* returnRoot();
+    void printTreeImage(); //Use some formatting to print full tree
     
     /***Vec***/
     void updateVec(T n);
@@ -45,17 +45,25 @@ private:
     /***Helpers***/
     void remove(b_treeNode<T>*& link);
     void add(b_treeNode<T>*& link, T n);
+    bool b_search(b_treeNode<T>* node, T n);
+    
+    //Recursive print functions
     void pre_order(b_treeNode<T>* link);
     void post_order(b_treeNode<T>* link);
     void in_order(b_treeNode<T>* link);
+    
+    //Used with copy constructor
     b_treeNode<T>* copy(b_treeNode<T>* cpy);
+    
+    //Used with balance
     b_treeNode<T>* balance(typename std::vector<T>::iterator start,
                               typename std::vector<T>::iterator end);
+
+    //Head and moving pointer
     b_treeNode<T>* h_ptr;
     b_treeNode<T>* m_ptr;
     
     std::vector<T> vec;
-    int numElements;
 };
 
 template <typename T>
@@ -69,12 +77,9 @@ Tree<T>::Tree(T n) {
     h_ptr = NULL;
     m_ptr = h_ptr;
     add(h_ptr, n);
-    ++numElements;
 }
 
-/**NEED TO WORK ON THIS ->
- GET COPY CONSTRUCTOR WORKING
- DO THIS RECURSIVELY**/
+//Copy constructor
 template <typename T>
 Tree<T>::Tree(Tree<T>& r_side) {
     h_ptr = copy(r_side.returnRoot());
@@ -111,7 +116,6 @@ b_treeNode<T>* Tree<T>::returnRoot() {
 template <typename T>
 void Tree<T>::add(T n) {
     add(h_ptr, n);
-    ++numElements;
 }
 
 template <typename T>
@@ -205,8 +209,20 @@ b_treeNode<T>* Tree<T>::balance(typename std::vector<T>::iterator start, typenam
 }
 
 template <typename T>
-int Tree<T>::getNumElements() {
-    return numElements;
+bool Tree<T>::b_search(T n) {
+    return b_search(h_ptr, n);
+}
+
+template <typename T>
+bool Tree<T>::b_search(b_treeNode<T>* node, T n) {
+    
+    if (node == NULL)
+        return 0;
+    else if (node -> data == n)
+        return 1;
+    else {
+        return b_search(node -> l_link, n) || b_search(node -> r_link, n);
+    }
 }
 
 template <typename T>
