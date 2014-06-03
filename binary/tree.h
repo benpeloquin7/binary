@@ -18,17 +18,27 @@ template <typename T>
 class Tree {
 
 public:
+    /***Constructors***/
     Tree();
     Tree(T n);
+    Tree(Tree<T>& r_side); //Copy constructor
+    
+    /***Tree***/
     void add(T n);
     void balance();
     T b_search(T n);
     int getNumElements();
+    b_treeNode<T>* returnRoot();
+    
+    /***Vec***/
     void updateVec(T n);
     void printVec();
+    
+    /***Display tree***/
     void pre_order();
     void post_order();
     void in_order();
+    
     ~Tree();
     
 private:
@@ -38,9 +48,9 @@ private:
     void pre_order(b_treeNode<T>* link);
     void post_order(b_treeNode<T>* link);
     void in_order(b_treeNode<T>* link);
+    b_treeNode<T>* copy(b_treeNode<T>* cpy);
     b_treeNode<T>* balance(typename std::vector<T>::iterator start,
                               typename std::vector<T>::iterator end);
-    
     b_treeNode<T>* h_ptr;
     b_treeNode<T>* m_ptr;
     
@@ -60,6 +70,42 @@ Tree<T>::Tree(T n) {
     m_ptr = h_ptr;
     add(h_ptr, n);
     ++numElements;
+}
+
+/**NEED TO WORK ON THIS ->
+ GET COPY CONSTRUCTOR WORKING
+ DO THIS RECURSIVELY**/
+template <typename T>
+Tree<T>::Tree(Tree<T>& r_side) {
+    h_ptr = copy(r_side.returnRoot());
+}
+
+template <typename T>
+b_treeNode<T>* Tree<T>::copy(b_treeNode<T>* cpy) {
+    
+    b_treeNode<T>* temp_node = new b_treeNode<T>; //New Root
+    
+    if (cpy != NULL) {
+        temp_node -> data = cpy -> data;
+        if (cpy -> l_link != NULL) {
+            temp_node -> l_link = new b_treeNode<T>;
+            temp_node -> l_link -> data = cpy -> l_link -> data;
+            temp_node -> l_link = copy(cpy -> l_link);
+        }
+        if (cpy -> r_link != NULL) {
+            temp_node -> r_link = new b_treeNode<T>;
+            temp_node -> r_link -> data = cpy -> r_link -> data;
+            temp_node -> r_link = copy(cpy -> r_link);
+        }
+    } else
+        return cpy;
+    
+    return temp_node;
+}
+
+template <typename T>
+b_treeNode<T>* Tree<T>::returnRoot() {
+    return h_ptr;
 }
 
 template <typename T>
@@ -123,7 +169,7 @@ b_treeNode<T>* Tree<T>::balance(typename std::vector<T>::iterator start, typenam
             newNode -> r_link = NULL;
             return newNode;
         } else {
-            it = start; //makke sure iterator is set to beginning
+            it = start; //make sure iterator is set to beginning
             //find total length of array passed over
             int count = 0;
             while (it != end) {
